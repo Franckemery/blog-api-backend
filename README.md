@@ -15,6 +15,7 @@ Le projet repose sur une architecture **MVC (Modèle-Vue-Contrôleur)** simplifi
 *   **Base de données** : SQLite3 (Base de données relationnelle légère)
 *   **Documentation** : Swagger UI (OpenAPI 3.0)
 *   **Middlewares** : CORS (Gestion des accès), Express JSON (Parsing des requêtes)
+*   **Frontend** : Une interface a été implimenter afin de pouvoir communiquer avec l'API. 
 
 ---
 
@@ -150,6 +151,46 @@ Pour chaque requête ci-dessous, vous ne pouvez rien modifier tant que vous n'av
 - Résultat : L'article est supprimé de la base SQLite.
 
 ---
+
+## 🌐 Interface Utilisateur (Frontend)
+
+En plus de l'API Backend, ce projet inclut une **interface web interactive** (Single Page Application) située dans le dossier `/public`. Cette interface permet aux utilisateurs d'interagir avec l'API sans utiliser d'outils techniques tiers.
+
+### Fonctionnalités de l'interface :
+- **Affichage dynamique** : Liste des articles récupérée en temps réel via l'API.
+- **Formulaire intelligent** : Permet à la fois la **création** de nouveaux articles et la **modification** d'articles existants (gestion dynamique du mode POST/PUT).
+- **Moteur de recherche** : Recherche instantanée par mot-clé dans les titres et les contenus.
+- **Gestion de la suppression** : Suppression d'articles avec demande de confirmation.
+
+---
+
+## 🛠️ Détails Techniques du Backend
+
+L'API est conçue selon une architecture **MVC (Modèle-Vue-Contrôleur)** pour garantir une maintenance facile et une séparation des responsabilités :
+
+1.  **Routes (`/src/routes`)** : Définit les points d'entrée de l'API et contient les annotations **Swagger** pour la documentation.
+2.  **Contrôleurs (`/src/controllers`)** : Contient la logique métier, la validation des données entrantes et les interactions avec la base de données.
+3.  **Modèles (`/src/models`)** : Gère la structure des données et l'initialisation de la table `articles` dans SQLite.
+4.  **Configuration (`/src/config`)** : Centralise la connexion à la base de données SQLite.
+
+### Gestion des Données et Sécurité
+- **Persistance** : Les données sont stockées dans un fichier `database.sqlite`, assurant la conservation des articles même après l'arrêt du serveur.
+- **Middleware CORS** : Activé pour permettre la communication fluide entre le Frontend (client) et le Backend (serveur).
+- **Validation** : Le serveur rejette les requêtes incomplètes (champs obligatoires manquants) avec un code d'erreur `400 Bad Request`.
+
+---
+
+## 📖 Comment utiliser le projet ?
+
+### Accès aux interfaces :
+- **Application Web** : `http://localhost:3000` (Interface conviviale pour les utilisateurs).
+- **Documentation Swagger** : `http://localhost:3000/api-docs` (Interface pour les développeurs et les tests techniques).
+
+### Tester la Recherche :
+Dans l'interface web, saisissez un mot-clé dans la barre de recherche. Le Frontend envoie une requête `GET` vers `/api/articles/search?query=votre_mot`, et l'API retourne uniquement les résultats correspondants grâce à l'opérateur SQL `LIKE`.
+
+### Tester la Modification :
+Cliquez sur le bouton **"Modifier"** d'un article. Le formulaire se remplit automatiquement avec les données actuelles de l'article. Lors de la validation, le Frontend utilise la méthode **`PUT`** pour mettre à jour l'entrée correspondante en base de données via son ID unique.
 
 ## 🛡️ Bonnes Pratiques Appliquées
 
